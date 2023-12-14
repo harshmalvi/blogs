@@ -1,0 +1,6 @@
+# Node artifact directory
+dist/
+node_modules
+
+# Node artifact files
+.env
