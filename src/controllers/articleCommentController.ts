@@ -111,6 +111,7 @@ class ArticleCommentController {
         where: { id }
       });
 
+      // Checks article exists or not
       if(!isArticleExists) {
         return res.failResponse(
           httpStatusConstant.NOT_FOUND,
@@ -122,6 +123,7 @@ class ArticleCommentController {
         where: { id: parent_comment_id }
       });
 
+      // Checks article's parent comment is exists or not
       if(!isArticleParentCommentExists) {
         return res.failResponse(
           httpStatusConstant.NOT_FOUND,

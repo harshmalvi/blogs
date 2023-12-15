@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../index';
+import ArticleComment from './article_comments';
 
 export default class Article extends Model {
   public id!: number;
@@ -46,3 +47,8 @@ Article.init(
     updatedAt: 'updated_at'
   }
 );
+
+Article.hasMany(ArticleComment, {
+  foreignKey: 'article_id',
+  as: 'comments',
+});

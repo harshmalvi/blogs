@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 
-import Artice from '../db/models/article';
+import Article from '../db/models/article';
 import messageConstant from '../constants/message.constant';
 import httpStatusConstant from '../constants/httpStatus.constant';
 import schemaConstant from '../constants/schema.constant';
 import { ISortingType } from '../interface/common.interface';
+import ArticleComment from '../db/models/article_comments';
 
 class ArticleController {
   // List Articles
@@ -18,7 +19,7 @@ class ArticleController {
       } = req.query as unknown as ISortingType;
       const skip = (page - 1) * size;
 
-      const articles = await Artice.findAndCountAll({
+      const articles = await Article.findAndCountAll({
         limit: size,
         offset: skip,
         order: [[sortBy, orderBy]]
@@ -44,10 +45,23 @@ class ArticleController {
         params: { id }
       } = req;
 
-      const article = await Artice.findOne({
-        where: { id }
+      const article = await Article.findOne({
+        include: [
+          {
+            model: ArticleComment,
+            as: 'comments',
+            include: [
+              {
+                model: ArticleComment,
+                as: 'childComments',
+              },
+            ],
+          },
+        ],
+        where: { id },
       });
 
+      // Checks article exists or not
       if(!article) {
         return res.failResponse(
           httpStatusConstant.NOT_FOUND,
@@ -76,7 +90,7 @@ class ArticleController {
         body: { nickname, title, content }
       } = req;
 
-      const article = await Artice.create({
+      const article = await Article.create({
         nickname,
         title,
         content
