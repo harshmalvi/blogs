@@ -71,7 +71,7 @@ class ArticleCommentController {
       const articles = await ArticleComment.findAndCountAll({
         limit: size,
         offset: skip,
-        where: { article_id: id },
+        where: { article_id: id, parent_comment_id: null },
         include: [
           {
             model: ArticleComment,
