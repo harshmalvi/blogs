@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../index';
+import Article from './article';
 
 export default class ArticleComment extends Model {
   public id!: number;
@@ -25,9 +26,13 @@ ArticleComment.init(
       type: DataTypes.STRING,
       allowNull: false
     },
-    parent_comment_id: {
+    article_id: {
       type: DataTypes.NUMBER,
       allowNull: false
+    },
+    parent_comment_id: {
+      type: DataTypes.NUMBER,
+      allowNull: true
     },
     created_at: {
       type: DataTypes.DATE,
@@ -46,3 +51,8 @@ ArticleComment.init(
     updatedAt: 'updated_at'
   }
 );
+
+ArticleComment.hasMany(ArticleComment, {
+  foreignKey: 'parent_comment_id',
+  as: 'childComments'
+});

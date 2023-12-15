@@ -47,6 +47,14 @@ class ArticleController {
       const article = await Artice.findOne({
         where: { id }
       });
+
+      if(!article) {
+        return res.failResponse(
+          httpStatusConstant.NOT_FOUND,
+          messageConstant.ARTICLE_NOT_FOUND,
+        );
+      }
+
       res.successResponse(
         httpStatusConstant.OK,
         messageConstant.SUCCESS,
