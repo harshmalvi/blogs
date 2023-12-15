@@ -18,6 +18,6 @@ module.exports = {
     freezeTableName: true
   },
   dialectOptions: {
-    statement_timeout: 20000 // 20 second
+    connectTimeout: 20000 // 20 second
   }
 };
